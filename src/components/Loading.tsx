@@ -1,0 +1,1 @@
+export const Loading = ()=>(<div className='maploading'>Map View Loading ...</div>)

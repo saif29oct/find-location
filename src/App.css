@@ -1,0 +1,33 @@
+
+@import '~antd/dist/antd.css';
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#root{
+  position: absolute;
+  padding: 30px;
+  width: 100%;
+}
+
+.map-container {
+  height: 400px;
+}
+
+.mapboxgl-popup-content{
+  margin-bottom: 25px;
+  padding: 5px;
+}
+
+.logo{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.maploading{
+  padding-left: 300px;
+  padding-top: 100px;
+}
