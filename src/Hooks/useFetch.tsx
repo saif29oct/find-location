@@ -13,16 +13,15 @@ export interface IUseFetchProps {
 
 export default function UseFetch ({url, options}: IUseFetchProps) {
 
-    const [dataContainer, setDataContainer] = useState([])
+    const [dataContainer, setDataContainer] = useState([]);
 
-    useEffect(()=>{
-        (async() =>{
+    useEffect(() => {
+        (async () => {
             const fetchPromiseData = await fetch(url, options);
             const fetchJsonData = await fetchPromiseData.json();
             setDataContainer(fetchJsonData['results']);
-        
-        })()
-    },[url])
+        })();
+    }, [url, options]); // Add 'options' to the dependency array
 
     return dataContainer;
 }
