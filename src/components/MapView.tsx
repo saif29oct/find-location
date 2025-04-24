@@ -1,8 +1,11 @@
 import React, { useRef, useEffect } from 'react';
-import mapboxgl from 'mapbox-gl';
+import L from 'leaflet';
 import { IMapData } from '../Layouts/FindResturant';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../store';
+
+// // Import Leaflet CSS
+// import 'leaflet/dist/leaflet.css';
 
 export interface IMapViewProps {
   props: IMapData[],
@@ -11,44 +14,52 @@ export interface IMapViewProps {
 
 export default function MapView ({props: mapData, search}: IMapViewProps) {
 
-  let {latitude, longitude, zoom} = useSelector((state:ReduxState)=>state.map)
+  let {latitude, longitude, zoom} = useSelector((state: ReduxState) => state.map);
 
-  mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN!
+  const mapContainer = useRef<HTMLDivElement | null>(null);
+  let map: L.Map | null = null;
 
-  const mapContainer = useRef(null);
-
-  if(search){
-    ({latitude, longitude} = mapData[0].geocodes.main)
+  if (search && mapData.length > 0) {
+    ({ latitude, longitude } = mapData[0].geocodes.main);
   }
 
   useEffect(() => {
-    if (!mapboxgl.supported()){
-      alert("This browser does not support Mapbox GL.")
-      return
+    if (mapContainer.current) {
+      if (map) {
+        map.remove();
+      }
+
+      map = L.map(mapContainer.current).setView([latitude, longitude], zoom);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      mapData.forEach((item: IMapData) => {
+        const { latitude, longitude } = item.geocodes.main;
+        const marker = L.marker([latitude, longitude]);
+
+        if (map) {
+          marker.addTo(map);
+        }
+
+        const title = item.name;
+        const address = item.location.formatted_address;
+        marker.bindPopup(`<div>${title}</div><div>${address}</div>`);
+      });
     }
 
-    const mapClone = new mapboxgl.Map({
-      container: mapContainer.current!,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [longitude, latitude],
-      zoom: zoom
-    });
+    return () => {
+      if (map) {
+        map.remove();
+      }
+    };
+  }, [mapData, latitude, longitude, zoom]);
 
-    mapData.forEach((item: IMapData)=>{
-      const {latitude, longitude} = item.geocodes.main
-      new mapboxgl.Marker().setLngLat([longitude, latitude]).addTo(mapClone);
-
-      const title = item.name
-      const address = item.location.formatted_address
-      new mapboxgl.Popup({ closeOnClick: false }).setLngLat([longitude, latitude]).setHTML('<div>'+title+'</div><div>'+address+'</div>').addTo(mapClone);
-    })
-
-  },[mapData, latitude, longitude, zoom])
-  
   return (
-    <div>
-      <div ref={mapContainer} className="map-container">
+      <div>
+        <div ref={mapContainer} className="map-container" style={{ height: '100vh', width: '100%' }}></div>
       </div>
-    </div>
   );
 }
