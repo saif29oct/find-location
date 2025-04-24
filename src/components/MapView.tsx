@@ -4,8 +4,27 @@ import { IMapData } from '../Layouts/FindResturant';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../store';
 
-// // Import Leaflet CSS
-// import 'leaflet/dist/leaflet.css';
+// Import Leaflet CSS
+import 'leaflet/dist/leaflet.css';
+
+// Import marker icon from leaflet package
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
+import iconUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+
+// Override default icon
+const DefaultIcon = L.icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 export interface IMapViewProps {
   props: IMapData[],
@@ -17,7 +36,7 @@ export default function MapView ({props: mapData, search}: IMapViewProps) {
   let {latitude, longitude, zoom} = useSelector((state: ReduxState) => state.map);
 
   const mapContainer = useRef<HTMLDivElement | null>(null);
-  let map: L.Map | null = null;
+  const mapRef = useRef<L.Map | null>(null);
 
   if (search && mapData.length > 0) {
     ({ latitude, longitude } = mapData[0].geocodes.main);
@@ -25,23 +44,23 @@ export default function MapView ({props: mapData, search}: IMapViewProps) {
 
   useEffect(() => {
     if (mapContainer.current) {
-      if (map) {
-        map.remove();
+      if (mapRef.current) {
+        mapRef.current.remove();
       }
 
-      map = L.map(mapContainer.current).setView([latitude, longitude], zoom);
+      mapRef.current = L.map(mapContainer.current).setView([latitude, longitude], zoom);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
-      }).addTo(map);
+      }).addTo(mapRef.current);
 
       mapData.forEach((item: IMapData) => {
         const { latitude, longitude } = item.geocodes.main;
         const marker = L.marker([latitude, longitude]);
 
-        if (map) {
-          marker.addTo(map);
+        if (mapRef.current) {
+          marker.addTo(mapRef.current);
         }
 
         const title = item.name;
@@ -51,8 +70,8 @@ export default function MapView ({props: mapData, search}: IMapViewProps) {
     }
 
     return () => {
-      if (map) {
-        map.remove();
+      if (mapRef.current) {
+        mapRef.current.remove();
       }
     };
   }, [mapData, latitude, longitude, zoom]);
