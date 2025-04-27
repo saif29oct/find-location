@@ -44,16 +44,22 @@ export default function MapView ({props: mapData, search}: IMapViewProps) {
 
   useEffect(() => {
     if (mapContainer.current) {
-      if (mapRef.current) {
-        mapRef.current.remove();
+      if (!mapRef.current) {
+        mapRef.current = L.map(mapContainer.current).setView([latitude, longitude], zoom);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '© OpenStreetMap'
+        }).addTo(mapRef.current);
+      } else {
+        mapRef.current.setView([latitude, longitude], zoom);
       }
 
-      mapRef.current = L.map(mapContainer.current).setView([latitude, longitude], zoom);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-      }).addTo(mapRef.current);
+      mapRef.current.eachLayer((layer) => {
+        if (layer instanceof L.Marker) {
+          mapRef.current?.removeLayer(layer);
+        }
+      });
 
       mapData.forEach((item: IMapData) => {
         const { latitude, longitude } = item.geocodes.main;
@@ -72,6 +78,7 @@ export default function MapView ({props: mapData, search}: IMapViewProps) {
     return () => {
       if (mapRef.current) {
         mapRef.current.remove();
+        mapRef.current = null;
       }
     };
   }, [mapData, latitude, longitude, zoom]);
