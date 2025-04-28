@@ -100,7 +100,7 @@ export function FindResturant () {
         </Row>
 
         <Row>
-          <Col sm={24} md={8} style={{ padding: 5 }}>
+          <Col  xs={24} sm={24} md={8} style={{ padding: 5 }}>
             <Button onClick={() => { nearestRestaurant() }} type="primary" style={{ margin: 5, height: 50 }} block>
               Find a random Restaurant near you
             </Button>
@@ -117,7 +117,7 @@ export function FindResturant () {
               searchRequest ? <SearchLocation props={searchRequest} setPlace={setPlace} /> : (place.length > 0) ? <LocationFilter props={place} setPosition={setPlace} /> : null
             }
           </Col>
-          <Col sm={24} md={16} style={{ padding: 10 }}>
+          <Col xs={24} sm={24} md={16} style={{ padding: 10 }}>
             {
               isFetching ? <Loading /> :
                   (place.length === 0 && mapData.length === 0) ? <Loading /> :
