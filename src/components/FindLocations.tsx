@@ -45,7 +45,6 @@ export function FindLocations() {
             related_places: {}
         }
     ];
-    const [selectedCategory, setSelectedCategory] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -75,7 +74,7 @@ export function FindLocations() {
                         type="text"
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Ex. Restaurant"
-                        value={selectedCategory}
+                        value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onFocus={() => setIsOpen(true)}
                         onBlur={() => setTimeout(() => setIsOpen(false), 200)} // Small delay to allow click on options
@@ -91,7 +90,6 @@ export function FindLocations() {
                                     <li
                                         key={category}
                                         onClick={() => {
-                                            setSelectedCategory(category);
                                             setSearchTerm(category);
                                             setIsOpen(false);
                                         }}
