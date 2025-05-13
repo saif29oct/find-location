@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function ArticleSection() {
     return (
         <div className="lg:col-span-1 relative">

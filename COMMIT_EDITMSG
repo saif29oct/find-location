@@ -1,4 +1,0 @@
-refactor(components): remove unnecessary comments and improve code readability
-
-- Remove redundant comments in ArticleSection, FindLocations, and NavigationMenu components
-- Improve code structure and readability
