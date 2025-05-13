@@ -1,4 +1,3 @@
-
 import './App.css'
 import NavigationMenu from "./components/NavigationMenu.tsx";
 import Title from "./components/Title.tsx";
