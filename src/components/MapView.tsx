@@ -1,22 +1,18 @@
 import {useRef, useEffect} from 'react';
-import L from 'leaflet';
-import type {IMapData} from './FindLocations';
+import * as L from 'leaflet';
+import type {IMapData} from "../types/map";
 import {useSelector} from 'react-redux';
 import type {ReduxState} from '../store';
 
 // Import Leaflet CSS
 import 'leaflet/dist/leaflet.css';
-
-// Import marker icon from leaflet package
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
-import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+import {Layer} from "leaflet";
 
 // Override default icon
 const DefaultIcon = L.icon({
-    iconRetinaUrl,
-    iconUrl,
-    shadowUrl,
+    iconRetinaUrl: '/icons/marker-icon.png',
+    iconUrl: '/icons/marker-icon-2x.png',
+    shadowUrl: '/icons/marker-shadow.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
@@ -57,7 +53,7 @@ export default function MapView({props: mapData, search}: IMapViewProps) {
 
             mapRef.current.eachLayer((layer) => {
                 if (layer instanceof L.Marker) {
-                    mapRef.current?.removeLayer(layer);
+                    mapRef.current?.removeLayer(layer as Layer);
                 }
             });
 

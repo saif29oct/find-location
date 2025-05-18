@@ -1,26 +1,6 @@
 import UseFetch, {type IUseFetchProps} from './useFetch.ts';
 import {useMemo} from "react";
-
-export interface IMapData {
-    categories?: [],
-    chains?: [],
-    distance: number,
-    fsq_id: string,
-    geocodes: {
-        main: {
-            latitude: number
-            longitude: number
-        }
-    },
-    link?: string,
-    location: {
-        description: string,
-        formatted_address: string
-    },
-    name: string,
-    related_places?: object,
-    timezone?: string
-}
+import type {IMapData} from "../types/map";
 
 export interface IMapState {
     name?: string
@@ -40,7 +20,7 @@ export interface IMapState {
 // }
 
 export const useMapData = (mapState: IMapState): IMapData[] | [] => {
-    if (!mapState || mapState.latitude === undefined || mapState.longitude === undefined) {
+    if (!mapState || !mapState.latitude || !mapState.longitude) {
         throw new Error("Define initial location");
     }
 
@@ -64,7 +44,7 @@ export const useMapData = (mapState: IMapState): IMapData[] | [] => {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    Authorization: process.env.REACT_APP_FOUR_SQUARE_API_KEY
+                    Authorization: import.meta.env.VITE_FOURSQUARE_API_KEY
                 }
             }
         };

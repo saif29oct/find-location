@@ -1,27 +1,6 @@
 import MapView from '../components/MapView';
 import {useState} from "react";
-
-
-export interface IMapData {
-    categories?: [],
-    chains?: [],
-    distance: number,
-    fsq_id: string,
-    geocodes: {
-        main: {
-            latitude: number
-            longitude: number
-        }
-    },
-    link?: string,
-    location: {
-        description: string,
-        formatted_address: string
-    },
-    name: string,
-    related_places?: object,
-    timezone?: string
-}
+import type {IMapData, IMapState} from "../types/map";
 
 export function FindLocations() {
 
@@ -47,6 +26,14 @@ export function FindLocations() {
     ];
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+
+    const currentLocation: IMapState = {
+        latitude: 23.78159,
+        longitude: 90.40050,
+        radius: 3000,
+        categories: 13000,
+        zoom: 14
+    }
 
     const categories = [
         "Hospital",
