@@ -19,7 +19,7 @@ export interface IMapData {
         formatted_address: string
     },
     name: string,
-    related_places?: {},
+    related_places?: object,
     timezone?: string
 }
 
