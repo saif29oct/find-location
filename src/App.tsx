@@ -3,18 +3,16 @@ import NavigationMenu from "./components/NavigationMenu.tsx";
 import Title from "./components/Title.tsx";
 import {FindLocations} from "./components/FindLocations.tsx";
 import ArticleSection from "./components/ArticleSection.tsx";
-import {useMapData} from "./hooks/useMapData.ts";
-import type {IMapData, IMapState} from "./types/map";
 
 function App() {
 
-    const initialState: IMapState = {
-        latitude: 23.78159,
-        longitude: 90.40050,
-        radius: 3000,
-        categories: 13000,
-        zoom: 14
-    }
+    // const initialState: IMapState = {
+    //     latitude: 23.78159,
+    //     longitude: 90.40050,
+    //     radius: 3000,
+    //     categories: 13000,
+    //     zoom: 14
+    // }
     // const mapData: IMapData[] | [] = useMapData(initialState);
     // console.log(mapData);
 

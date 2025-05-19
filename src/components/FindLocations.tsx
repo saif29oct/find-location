@@ -1,6 +1,9 @@
 import MapView from '../components/MapView';
 import {useState} from "react";
-import type {IMapData, IMapState} from "../types/map";
+import type {IMapData} from "../types/map";
+import MavViewForm from "./MapViewForm.tsx";
+
+
 
 export function FindLocations() {
 
@@ -27,13 +30,13 @@ export function FindLocations() {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const currentLocation: IMapState = {
-        latitude: 23.78159,
-        longitude: 90.40050,
-        radius: 3000,
-        categories: 13000,
-        zoom: 14
-    }
+    // const currentLocation: IMapState = {
+    //     latitude: 23.78159,
+    //     longitude: 90.40050,
+    //     radius: 3000,
+    //     categories: 13000,
+    //     zoom: 14
+    // }
 
     const categories = [
         "Hospital",
@@ -91,54 +94,7 @@ export function FindLocations() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4">
-                <div className="flex gap-4">
-                    <div style={{width: '25%', maxWidth: 150}}>
-                        <label htmlFor="time" className="block text-sm font-medium text-gray-700 mb-1 text-left">
-                            Radius
-                        </label>
-                        <div className="flex items-center">
-                            <input
-                                type="number"
-                                id="time"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                                defaultValue={1}
-                            />
-                            <span className="ml-2 text-sm text-gray-600">km</span>
-                        </div>
-                    </div>
-                    <div className="flex-grow">
-                        <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1 text-left">
-                            Your Location
-                        </label>
-                        <input
-                            type="text"
-                            id="date"
-                            placeholder="your current location"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        />
-                    </div>
-                </div>
-
-                <div>
-                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1 text-left">
-                        Place you are looking for
-                    </label>
-                    <input
-                        type="text"
-                        id="location"
-                        placeholder="Ex. Dhaka Bank"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    />
-                </div>
-
-                <button
-                    type="submit"
-                    className="w-30 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                    Search
-                </button>
-            </div>
+            <MavViewForm/>
 
             <div className="mt-4">
                 <MapView props={defaultLocation} search={true}/>
