@@ -36,6 +36,7 @@ export default function MapView({props: mapData, search}: IMapViewProps) {
 
     if (search && mapData.length > 0) {
         ({latitude, longitude} = mapData[0].geocodes.main);
+        zoom = 17
     }
 
     useEffect(() => {

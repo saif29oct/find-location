@@ -1,5 +1,5 @@
 import * as React from "react";
-import CategoryList from "./CategoryList"; // ✅ Make sure path is correct
+import CategoryList from "./CategoryList";
 import { useState } from "react";
 import type {CategoryContextType} from "../types/category";
 
@@ -22,9 +22,8 @@ export default function MapViewForm() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formValues = Object.fromEntries(formData);
-        console.log(formValues);
+        // const formData = new FormData(event.currentTarget);
+        // const formValues = Object.fromEntries(formData);
     };
 
     const categoryContext: CategoryContextType = {

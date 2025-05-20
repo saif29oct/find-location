@@ -1,18 +1,10 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-
-export interface IMapState {
-  name?: string,
-  longitude: number,
-  latitude: number,
-  radious?: number,
-  categories?: number
-  zoom?: number,
-}
+import type { IMapState } from '../types/map'
 
 const initialState: IMapState = {
   latitude: 23.78159,
   longitude: 90.40050,
-  radious: 3000,
+  radius: 3000,
   categories: 13000,
   zoom: 14
 }
@@ -23,6 +15,7 @@ const mapSlice = createSlice({
     updatePosition(state: IMapState, action: PayloadAction<IMapState>) {
       state.latitude = action.payload.latitude;
       state.longitude = action.payload.longitude;
+      state.zoom = action.payload.zoom;
     },
   },
 })

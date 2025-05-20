@@ -15,7 +15,7 @@ const CategoryList = ({currentCategory, categories, onSelect }: CategoryContextT
             <div className="relative">
                 <input
                     type="text"
-                    name="category" // 👈 This allows it to be included in FormData
+                    name="category"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onFocus={() => setIsOpen(true)}
