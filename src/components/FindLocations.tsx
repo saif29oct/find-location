@@ -4,14 +4,6 @@ import type {IMapData} from "../types/map";
 
 export function FindLocations() {
 
-    // const currentLocation: IMapState = {
-    //     latitude: 23.78159,
-    //     longitude: 90.40050,
-    //     radius: 3000,
-    //     categories: 13000,
-    //     zoom: 14
-    // }
-
     const defaultLocation: IMapData[] = [
         {
             name: "Dhaka Medical College Hospital",

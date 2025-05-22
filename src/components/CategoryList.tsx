@@ -11,7 +11,7 @@ const CategoryList = ({currentCategory, categories, onSelect }: CategoryContextT
 
     return (
         <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Search Category</label>
+            <label className="block text-sm font-medium text-gray-700 text-left mb-1">Search Category</label>
             <div className="relative">
                 <input
                     type="text"

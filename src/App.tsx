@@ -6,16 +6,6 @@ import ArticleSection from "./components/ArticleSection.tsx";
 
 function App() {
 
-    // const initialState: IMapState = {
-    //     latitude: 23.78159,
-    //     longitude: 90.40050,
-    //     radius: 3000,
-    //     categories: 13000,
-    //     zoom: 14
-    // }
-    // const mapData: IMapData[] | [] = useMapData(initialState);
-    // console.log(mapData);
-
   return (
       <div className="min-h-screen bg-gray-50">
           <header>
@@ -24,16 +14,17 @@ function App() {
           </header>
           <main className="max-w-7xl mx-auto px-4 py-8">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  {/* Left Column */}
-                  <div className="lg:col-span-2 space-y-4">
-                      {/* Main Content Area */}
+
+                  <section className="lg:col-span-2 space-y-4">
                       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                           <FindLocations/>
                       </div>
-                  </div>
+                  </section>
 
-                  {/* Right Column */}
-                  <ArticleSection/>
+                  <section>
+                      <ArticleSection/>
+                  </section>
+
               </div>
           </main>
       </div>
