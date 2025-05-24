@@ -1,13 +1,16 @@
 import * as React from "react";
-import type {CategoryContextType} from "../types/category";
+import type { CategoryContextType } from "../types/category";
 
-const CategoryList = ({currentCategory, categories, onSelect }: CategoryContextType) => {
+const CategoryList = ({ currentCategory, categories, onSelect }: CategoryContextType) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [searchTerm, setSearchTerm] = React.useState(currentCategory);
 
-    const filtered = categories.filter((cat) =>
-        cat.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Filtered categories based on search term (case-insensitive)
+    const filteredCategories = React.useMemo(() => {
+        return categories.filter((category) =>
+            category.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }, [categories, searchTerm]);
 
     return (
         <div className="mb-4">
@@ -25,17 +28,17 @@ const CategoryList = ({currentCategory, categories, onSelect }: CategoryContextT
                 />
                 {isOpen && (
                     <ul className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto bg-white border border-gray-300 rounded-md shadow-lg">
-                        {filtered.map((category) => (
+                        {filteredCategories.map((category) => (
                             <li
-                                key={category}
+                                key={category.id}
                                 onClick={() => {
-                                    setSearchTerm(category);
+                                    setSearchTerm(category.name);
                                     setIsOpen(false);
-                                    onSelect(category);
+                                    onSelect(category.name);
                                 }}
                                 className="px-4 py-2 cursor-pointer hover:bg-blue-100"
                             >
-                                {category}
+                                {category.name}
                             </li>
                         ))}
                     </ul>

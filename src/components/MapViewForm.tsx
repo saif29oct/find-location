@@ -2,30 +2,17 @@ import * as React from "react";
 import CategoryList from "./CategoryList";
 import {useRef, useState} from "react";
 import type {CategoryContextType} from "../types/category";
-// import {useCategories} from "../hooks/useFetchFourSquarePlaceCategories.ts";
+import {useCategories} from "../hooks/useFetchFourSquarePlaceCategories.ts";
 
 export default function MapViewForm() {
     const [selectedCategory, setSelectedCategory] = useState("");
 
-    // const csvUrl = `/data/places_categories.csv`;
-    // const { loading, error } = useCategories(csvUrl);
+    const csvUrl = `/data/places_categories.csv`;
+    const {categories} = useCategories(csvUrl);
 
     const userLocationRef = useRef<HTMLInputElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
 
-    const categories = [
-        "Hospital",
-        "Bank",
-        "College",
-        "University",
-        "Shopping Mall",
-        "Junctions",
-        "Bus Stands",
-        "Mosques",
-        "CRM Machine",
-        "ATM",
-        "School"
-    ];
 
     type FormData = {
         userLocation: string

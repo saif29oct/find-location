@@ -1,10 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-
-interface Category {
-    id: string;
-    name: string;
-    label: string;
-}
+import type { Category } from '../types/category';
 
 export const useCategories = (csvPath: string) => {
     const [categories, setCategories] = useState<Category[]>([]);
