@@ -10,35 +10,49 @@ export default function MapViewForm() {
     const csvUrl = `/data/places_categories.csv`;
     const {categories} = useCategories(csvUrl);
 
-    const userLocationRef = useRef<HTMLInputElement>(null);
     const formRef = useRef<HTMLFormElement>(null);
 
-
     type FormData = {
-        userLocation: string
+        category: string,
+        city: string,
+        state: string,
+        postal_code?: number,
+        radius?: number,
+        place?: string
     };
 
+    // handle form submission
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const formData: FormData = {
-            userLocation: userLocationRef.current?.value || ''
+        const formData = new FormData(event.currentTarget);
+        const formValues = Object.fromEntries(formData) as Record<keyof FormData, string>;
+
+        // Convert numeric fields to numbers where necessary
+        const parsedData: Partial<FormData> = {
+            category: selectedCategory,
+            city: formValues.city || "",
+            state: formValues.state || "",
+            postal_code: formValues.postal_code ? parseInt(formValues.postal_code, 10) : undefined,
+            radius: formValues.radius ? parseInt(formValues.radius, 10) : undefined,
+            place: formValues.place || undefined,
         };
 
         // Validation
         const errors: Partial<Record<keyof FormData, string>> = {};
-        if (!formData.userLocation) errors.userLocation = "Username is required";
+
+        if (!parsedData.city?.trim()) errors.city = "City is required";
+        if (!parsedData.state?.trim()) errors.state = "State is required";
 
         if (Object.keys(errors).length > 0) {
             console.error("Validation errors:", errors);
             return;
         }
 
-        console.log("Form submitted:", formData);
-        formRef.current?.reset();
+        console.log("Form submitted:", parsedData);
 
-        // const formData = new FormData(event.currentTarget);
-        // const formValues = Object.fromEntries(formData);
+        // Optionally reset form
+        formRef.current?.reset();
     };
 
     const categoryContext: CategoryContextType = {
@@ -114,7 +128,7 @@ export default function MapViewForm() {
                 type="submit"
                 className="w-30 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-            Search
+                Search
             </button>
         </form>
     );

@@ -18,13 +18,6 @@ export const useCategories = (csvPath: string) => {
                 }
 
                 const text = await response.text();
-//                 const text = `"Category ID","Category Name","Category Label"
-// "4d4b7104d754a06370d81259","Arts and Entertainment","Arts and Entertainment"
-// "4bf58dd8d48988d182941735","Amusement Park","Arts and Entertainment > Amusement Park"
-// "5109983191d435c0d71c2bb1","Attraction","Arts and Entertainment > Amusement Park > Attraction"
-// "4fceea171983d5d06c3e9823","Aquarium","Arts and Entertainment > Aquarium"
-// "4bf58dd8d48988d1e1931735","Arcade","Arts and Entertainment > Arcade"`;
-
 
                 const [headerLine, ...lines] = text.trim().split(/\r?\n/);
 

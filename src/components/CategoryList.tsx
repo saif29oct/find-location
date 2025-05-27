@@ -7,10 +7,13 @@ const CategoryList = ({ currentCategory, categories, onSelect }: CategoryContext
 
     // Filtered categories based on search term (case-insensitive)
     const filteredCategories = React.useMemo(() => {
+        if (searchTerm.trim().length < 3) return [];
+
         return categories.filter((category) =>
             category.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
     }, [categories, searchTerm]);
+
 
     return (
         <div className="mb-4">
@@ -26,7 +29,7 @@ const CategoryList = ({ currentCategory, categories, onSelect }: CategoryContext
                     className="w-full px-4 py-2 border border-gray-300 rounded-md"
                     placeholder="Ex. Restaurant"
                 />
-                {isOpen && (
+                {searchTerm.trim().length >= 3 && isOpen && (
                     <ul className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto bg-white border border-gray-300 rounded-md shadow-lg">
                         {filteredCategories.map((category) => (
                             <li
@@ -43,9 +46,11 @@ const CategoryList = ({ currentCategory, categories, onSelect }: CategoryContext
                         ))}
                     </ul>
                 )}
+
             </div>
         </div>
     );
 };
 
-export default CategoryList;
+// export default CategoryList;
+export default React.memo(CategoryList);
