@@ -54,3 +54,49 @@ export const useMapData = (mapState: IMapState): IMapData[] | [] => {
 
     return UseFetch(fetchProps);
 };
+
+export const usePlaceMatch = () => {
+    type plcereq = {
+        name: string;
+        city: string;
+        state?: string;
+        postal_code?: string;
+    }
+
+    const makeGetRequestUrl = (placeDta: plcereq): IUseFetchProps => {
+        const { name, city, state, postal_code } = placeDta;
+
+        const params = new URLSearchParams();
+
+        if (name) params.append("name", name);
+        if (city) params.append("city", city); // often used as address or city
+        if (state) params.append("state", state);
+        if (postal_code) params.append("postal_code", postal_code);
+
+        const urlStr = `https://api.foursquare.com/v3/places/match?${params.toString()}`;
+
+        return {
+            url: urlStr,
+            options: {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: import.meta.env.VITE_FOURSQUARE_API_KEY
+                }
+            }
+        };
+    };
+
+
+    const fetchProps = makeGetRequestUrl({
+        name: 'bank',
+        city: 'chittagong',
+        state: 'Bangladesh',
+        postal_code: '4207'
+    })
+
+    const result = UseFetch(fetchProps);
+    return {
+        placeMatched: result,
+    };
+};

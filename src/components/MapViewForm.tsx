@@ -3,12 +3,16 @@ import CategoryList from "./CategoryList";
 import {useRef, useState} from "react";
 import type {CategoryContextType} from "../types/category";
 import {useCategories} from "../hooks/useFetchFourSquarePlaceCategories.ts";
+import {usePlaceMatch} from "../hooks/useMapData.ts";
 
 export default function MapViewForm() {
     const [selectedCategory, setSelectedCategory] = useState("");
 
     const csvUrl = `/data/places_categories.csv`;
     const {categories} = useCategories(csvUrl);
+
+    const {placeMatched} = usePlaceMatch();
+    console.log(placeMatched)
 
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -51,9 +55,16 @@ export default function MapViewForm() {
 
         console.log("Form submitted:", parsedData);
 
+        // invoke  usePlaceMatch();
+
+
+
+
         // Optionally reset form
         formRef.current?.reset();
     };
+
+
 
     const categoryContext: CategoryContextType = {
         currentCategory: selectedCategory,
