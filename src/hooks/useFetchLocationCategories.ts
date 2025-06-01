@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import type { Category } from '../types/category';
+import type { ListItem } from '../types/list-components';
 
 export const useCategories = (csvPath: string) => {
-    const [categories, setCategories] = useState<Category[]>([]);
+    const [categories, setCategories] = useState<ListItem[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<Error | null>(null);
 
@@ -25,9 +25,9 @@ export const useCategories = (csvPath: string) => {
                     .split(',')
                     .map(h => h.trim().replace(/^"|"$/g, ''));
 
-                const idxId = headers.indexOf('Category ID');
-                const idxName = headers.indexOf('Category Name');
-                const idxLabel = headers.indexOf('Category Label');
+                const idxId = headers.indexOf('id');
+                const idxName = headers.indexOf('name');
+                const idxLabel = headers.indexOf('label');
 
                 if (idxId < 0 || idxName < 0 || idxLabel < 0) {
                     const msg = `Invalid CSV header. Expected columns "Category ID", "Category Name", "Category Label".`;
@@ -37,27 +37,26 @@ export const useCategories = (csvPath: string) => {
                     return;
                 }
 
-
                 const validLines = lines.filter(line => line.trim() !== '');
-
 
                 const parsedCategories = validLines.map(line =>
                     line
                         .split(',')
-                        .map(c => c.trim().replace(/^"|"$/g, '')) // ✅ 移除字段两端的双引号
+                        .map(c => c.trim().replace(/^"|"$/g, ''))
                 );
-
 
                 const categories = parsedCategories.map(cols => ({
                     id: cols[idxId],
                     name: cols[idxName],
-                    label: cols[idxLabel],
+                    data: {
+                        label: cols[idxLabel],
+                        categoryId: cols[idxId],
+                        categoryName: cols[idxName]
+                    }
                 }));
-
 
                 setCategories(categories);
                 setLoading(false);
-
 
             } catch (err) {
                 setError(err as Error);

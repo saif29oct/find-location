@@ -12,7 +12,7 @@ export function FindLocations() {
             geocodes: {
                 main: {
                     latitude: 23.725, // Valid coordinates for Dhaka Medical College Hospital
-                    longitude: 90.4075
+                    longitude: 90.407
                 }
             },
             location: {
