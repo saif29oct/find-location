@@ -25,7 +25,6 @@ type District = {
     };
 };
 
-
 export default function MapViewForm() {
     const [selectedCategory, setSelectedCategory] = useState<ListItem<Category> | null>(null);
     const [selectedDistrict, setSelectedDistrict] = useState<ListItem<District> | null>(null);
