@@ -49,9 +49,7 @@ export const useCategories = (csvPath: string) => {
                     id: cols[idxId],
                     name: cols[idxName],
                     data: {
-                        label: cols[idxLabel],
-                        categoryId: cols[idxId],
-                        categoryName: cols[idxName]
+                        label: cols[idxLabel]
                     }
                 }));
 

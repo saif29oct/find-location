@@ -1,13 +1,34 @@
 import * as React from "react";
 import ListComponent from "./ListComponent.tsx";
 import {useRef, useState} from "react";
-import type {ListItem} from "../types/list-components";
+import type {ListComponentType, ListItem} from "../types/list-components";
 import {useCategories} from "../hooks/useFetchLocationCategories.ts";
 import {useDistricts} from "../hooks/useFetchDistricts.ts";
 
+
+// Define specific types for Category and District
+type Category = {
+    id: string;
+    name: string;
+    data: {
+        label: string;
+    };
+};
+
+type District = {
+    id: string;
+    name: string;
+    data: {
+        latitude: number;
+        longitude: number;
+        // Add other relevant fields for district
+    };
+};
+
+
 export default function MapViewForm() {
-    const [selectedCategory, setSelectedCategory] = useState<ListItem | null>(null);
-    const [selectedDistrict, setSelectedDistrict] = useState<ListItem | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<ListItem<Category> | null>(null);
+    const [selectedDistrict, setSelectedDistrict] = useState<ListItem<District> | null>(null);
 
     const csvUrl = `/data/places_categories.csv`;
     const districtsUrl = `/data/bangladesh_districts.csv`;
@@ -15,13 +36,14 @@ export default function MapViewForm() {
     const {categories} = useCategories(csvUrl);
     const {districts} = useDistricts(districtsUrl);
 
-    const formRef = useRef<HTMLFormElement>(null);
+    const formRef = useRef<HTMLFormElement | null>(null);
+
 
     type FormData = {
         category: string,
         city: string,
-        state: string,
-        postal_code?: number,
+        latitude: string,
+        longitude: string,
         radius?: number,
         place?: string
     };
@@ -37,17 +59,19 @@ export default function MapViewForm() {
         const parsedData: Partial<FormData> = {
             category: selectedCategory?.id || "",
             city: selectedDistrict?.name || formValues.city || "",
-            state: formValues.state || "",
-            postal_code: formValues.postal_code ? parseInt(formValues.postal_code, 10) : undefined,
+            latitude: selectedDistrict?.data?.latitude ?? 0,
+            longitude: selectedDistrict?.data?.longitude ?? 0,
+
             radius: formValues.radius ? parseInt(formValues.radius, 10) : undefined,
             place: formValues.place || undefined,
         };
+
+        console.log("Parsed form values:", parsedData)
 
         // Validation
         const errors: Partial<Record<keyof FormData, string>> = {};
 
         if (!parsedData.city?.trim()) errors.city = "City is required";
-        if (!parsedData.state?.trim()) errors.state = "State is required";
         if (!selectedCategory) errors.category = "Category is required";
 
         if (Object.keys(errors).length > 0) {
@@ -62,30 +86,33 @@ export default function MapViewForm() {
         // invoke  usePlaceMatch();
 
         // Optionally reset form
-        formRef.current?.reset();
+        if (formRef.current) {
+            formRef.current.reset();
+        }
         setSelectedCategory(null);
         setSelectedDistrict(null);
     };
 
-    const handleCategorySelect = (category: ListItem) => {
+    const handleCategorySelect = (category: ListItem<Category>) => {
         setSelectedCategory(category);
     };
 
-    const handleDistrictSelect = (district: ListItem) => {
+    const handleDistrictSelect = (district: ListItem<District>) => {
         setSelectedDistrict(district);
     };
 
-    const categoryListProps = {
+    const categoryListProps: ListComponentType<Category> = {
         selectedItem: selectedCategory?.id || "",
-        listItems: categories,
-        onSelect: handleCategorySelect,
+        listItems: categories as ListItem<Category>[], // Ensure this is typed correctly
+        onSelect: (category: ListItem<Category>) => handleCategorySelect(category), // Correctly typed onSelect
     };
 
-    const districtListProps = {
+    const districtListProps: ListComponentType<District> = {
         selectedItem: selectedDistrict?.id || "",
-        listItems: districts,
-        onSelect: handleDistrictSelect,
+        listItems: districts as ListItem<District>[], // Ensure this is typed correctly
+        onSelect: (district: ListItem<District>) => handleDistrictSelect(district), // Correctly typed onSelect
     };
+
 
     return (
         <form

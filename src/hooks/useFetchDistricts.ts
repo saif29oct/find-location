@@ -50,8 +50,6 @@ export const useDistricts = (csvPath: string) => {
                     id: cols[idxId],
                     name: cols[idxDistrict],
                     data: {
-                        districtId: cols[idxId],
-                        districtName: cols[idxDistrict],
                         latitude: parseFloat(cols[idxLatitude]),
                         longitude: parseFloat(cols[idxLongitude])
                     }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import type {ListComponentType} from "../types/list-components";
 
-const ListItems = ({selectedItem, listItems, onSelect}: ListComponentType) => {
+const ListItems = <T,>({ selectedItem, listItems, onSelect }: ListComponentType<T>) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [inputValue, setInputValue] = React.useState("");
 
@@ -47,7 +47,7 @@ const ListItems = ({selectedItem, listItems, onSelect}: ListComponentType) => {
                                 onSelect(item);
                             }}
                             className="px-4 py-2 cursor-pointer hover:bg-blue-100"
-                            data-selectedItem={JSON.stringify(item.data)}
+                            // data-selecteditem={JSON.stringify(item.data)}
                         >
                             {item.name}
                         </li>
