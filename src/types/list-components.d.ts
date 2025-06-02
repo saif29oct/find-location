@@ -1,11 +1,11 @@
-export interface ListItem {
+export interface ListItem<T = object> {
     id: string;
     name: string;
-    data: { };
+    data: T;
 }
 
-export interface ListComponentType {
+export interface ListComponentType<T = object> {
     selectedItem: string;
-    listItems: ListItem[];
-    onSelect: (listItem: ListItem) => void;
+    listItems: ListItem<T>[];
+    onSelect: (listItem: ListItem<T>) => void;
 }
