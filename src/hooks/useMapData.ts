@@ -11,17 +11,18 @@ export interface IMapState {
     zoom?: number
 }
 
-// const initialState: IMapState = {
-//     latitude: 23.78159,
-//     longitude: 90.40050,
-//     radius: 3000,
-//     categories: 13000,
-//     zoom: 14
-// }
+const initialState: IMapState = {
+    latitude: 23.78159,
+    longitude: 90.40050,
+    radius: 3000,
+    categories: 13000,
+    zoom: 14
+}
 
-export const useMapData = (mapState: IMapState): IMapData[] | [] => {
+export const useMapData = (mapState: IMapState | null): IMapData[] | [] => {
+
     if (!mapState || !mapState.latitude || !mapState.longitude) {
-        throw new Error("Define initial location");
+        return [];
     }
 
     const makeGetRequestUrl = (mapState: IMapState): IUseFetchProps => {
@@ -38,6 +39,8 @@ export const useMapData = (mapState: IMapState): IMapData[] | [] => {
             categoriesStr +
             ll;
 
+        console.log(urlStr);
+
         return {
             url: urlStr,
             options: {
@@ -50,7 +53,10 @@ export const useMapData = (mapState: IMapState): IMapData[] | [] => {
         };
     };
 
+
     const fetchProps = useMemo(() => makeGetRequestUrl(mapState), [mapState]);
+
+    console.log('fetchProps', fetchProps)
 
     return UseFetch(fetchProps);
 };
